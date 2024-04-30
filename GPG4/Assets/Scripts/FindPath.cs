@@ -16,8 +16,9 @@ public class FindPath : MonoBehaviour
 
     private void Start()
     {
-        pathfindingManager = new PathThreadingManager();
+        //pathfindingManager = new PathThreadingManager();
     }
+
     public void FindNewPath()
     {
 

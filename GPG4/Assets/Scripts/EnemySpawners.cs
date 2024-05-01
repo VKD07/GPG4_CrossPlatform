@@ -24,7 +24,7 @@ public class EnemySpawners : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(StartSpawningInLoop());
+        //StartCoroutine(StartSpawningInLoop());
     }
 
     IEnumerator StartSpawningInLoop()
@@ -36,9 +36,17 @@ public class EnemySpawners : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(SpawnEnemy());
+        }
+    }
+
     IEnumerator SpawnEnemy()
     {
-        while(index < spawnedCars.Count)
+        while(index < 20)
         {
             int randomSpawn = Random.Range(0, spawnPoints.Length);
             int randomTarget = Random.Range(0, targetPoints.Length);
@@ -94,23 +102,24 @@ public class EnemySpawners : MonoBehaviour
             GameObject newEnemy = Instantiate(enemy);
             newEnemy.SetActive(false);
             FindPath enemyPath = newEnemy.GetComponent<FindPath>();
-            enemyPath.pathfindingManager = new PathThreadingManager();
+
+            enemyPath.pathThreadManager = new PathThreadManager();
             enemyPath.astar = FindObjectOfType<Astar>();
             int randomTarget = Random.Range(0, targetPoints.Length);
             enemyPath.end = targetPoints[randomTarget];
             spawnedCars.Add(newEnemy);
         }
 
-        //for (int i = 0; i < ambulancePool; i++)
-        //{
-        //    GameObject newAmbulance = Instantiate(ambulance);
-        //    newAmbulance.SetActive(false);
-        //    FindPath ambulancePath = newAmbulance.GetComponent<FindPath>();
-        //    ambulancePath.pathfindingManager = new PathThreadingManager();
-        //    ambulancePath.astar = FindObjectOfType<Astar>();
-        //    int randomTarget = Random.Range(0, targetPoints.Length);
-        //    ambulancePath.end = targetPoints[randomTarget];
-        //    spawnedCars.Add(newAmbulance);
-        //}
+        for (int i = 0; i < ambulancePool; i++)
+        {
+            GameObject newAmbulance = Instantiate(ambulance);
+            newAmbulance.SetActive(false);
+            FindPath ambulancePath = newAmbulance.GetComponent<FindPath>();
+            ambulancePath.pathThreadManager = new PathThreadManager();
+            ambulancePath.astar = FindObjectOfType<Astar>();
+            int randomTarget = Random.Range(0, targetPoints.Length);
+            ambulancePath.end = targetPoints[randomTarget];
+            spawnedCars.Add(newAmbulance);
+        }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FindPath : MonoBehaviour
 {
-    public PathThreadingManager pathfindingManager;
+    public PathThreadManager pathThreadManager;
     public Astar astar;
     public Transform start, end;
     public List<Vector3> path;
@@ -14,17 +14,10 @@ public class FindPath : MonoBehaviour
     public bool isNotActive;
     public CarType carType;
 
-    private void Start()
-    {
-        //pathfindingManager = new PathThreadingManager();
-    }
-
     public void FindNewPath()
     {
-
-        //WithoutThread();
-        WithThread();
-
+        WithoutThread();
+        //WithThread();
     }
 
     void WithoutThread()
@@ -39,10 +32,10 @@ public class FindPath : MonoBehaviour
             }
         }
     }
-
+   
     void WithThread()
     {
-        pathfindingManager.FindPath(transform.position, end.position, astar, (List<Vector3> newPath) =>
+        pathThreadManager.FindPath(transform.position, end.position, astar, (List<Vector3> newPath) =>
         {
             path = newPath;
             currentPathIndex = 0;
@@ -82,7 +75,7 @@ public class FindPath : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        pathfindingManager.StopPathfindingThread();
+        pathThreadManager.StopPathfindingThread();
     }
 }
 
